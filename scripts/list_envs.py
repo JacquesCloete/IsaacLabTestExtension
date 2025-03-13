@@ -27,7 +27,7 @@ def main():
     """Print all environments registered in `isaac.lab_demo` extension."""
     # print all the available environments
     table = PrettyTable(["S. No.", "Task Name", "Entry Point", "Config"])
-    table.title = "Available Environments in Isaac Lab Template Extension"
+    table.title = "Available Environments in Isaac Lab Test Extension"
     # set alignment of table columns
     table.align["Task Name"] = "l"
     table.align["Entry Point"] = "l"
