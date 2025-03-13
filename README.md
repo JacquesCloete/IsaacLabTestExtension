@@ -1,4 +1,4 @@
-# Template for Isaac Lab Projects
+# Isaac Lab Test Extension
 
 [![IsaacSim](https://img.shields.io/badge/IsaacSim-4.5.0-silver.svg)](https://docs.omniverse.nvidia.com/isaacsim/latest/overview.html)
 [![Isaac Lab](https://img.shields.io/badge/IsaacLab-2.0.0-silver)](https://isaac-sim.github.io/IsaacLab)
@@ -10,7 +10,7 @@
 
 ## Overview
 
-This repository serves as a template for building projects or extensions based on Isaac Lab. It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
+This repository serves as a test extension using the extension template for building projects or extensions based on Isaac Lab. It allows you to develop in an isolated environment, outside of the core Isaac Lab repository.
 
 **Key Features:**
 
@@ -27,25 +27,19 @@ This repository serves as a template for building projects or extensions based o
 
 ```bash
 # Option 1: HTTPS
-git clone https://github.com/isaac-sim/IsaacLabExtensionTemplate.git
+git clone https://github.com/JacquesCloete/IsaacLabTestExtension.git
 
 # Option 2: SSH
-git clone git@github.com:isaac-sim/IsaacLabExtensionTemplate.git
-```
+git clone git@github.com:JacquesCloete/IsaacLabTestExtension.git
 
-- Throughout the repository, the name `ext_template` only serves as an example and we provide a script to rename all the references to it automatically:
-
-```bash
 # Enter the repository
-cd IsaacLabExtensionTemplate
-# Rename all occurrences of ext_template (in files/directories) to your_fancy_extension_name
-python scripts/rename_template.py your_fancy_extension_name
+cd IsaacLabTestExtension
 ```
 
 - Using a python interpreter that has Isaac Lab installed, install the library
 
 ```bash
-python -m pip install -e source/ext_template
+python -m pip install -e source/test_extension
 ```
 
 - Verify that the extension is correctly installed by running the following command:
@@ -64,7 +58,7 @@ If everything executes correctly, it should create a file .python.env in the `.v
 
 ### Setup as Omniverse Extension (Optional)
 
-We provide an example UI extension that will load upon enabling your extension defined in `source/ext_template/ext_template/ui_extension_example.py`.
+We provide an example UI extension that will load upon enabling your extension defined in `source/test_extension/test_extension/ui_extension_example.py`.
 
 To enable your extension, follow these steps:
 
@@ -177,7 +171,7 @@ In some VsCode versions, the indexing of part of the extensions is missing. In t
 ```json
 {
     "python.analysis.extraPaths": [
-        "<path-to-ext-repo>/source/ext_template"
+        "<path-to-ext-repo>/source/test_extension"
     ]
 }
 ```
