@@ -121,6 +121,41 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
 
     # create runner from rsl-rl
     runner = OnPolicyRunner(env, agent_cfg.to_dict(), log_dir=log_dir, device=agent_cfg.device)
+
+    # Log recorded videos to wandb if using wandb logger using monkey patching
+    if args_cli.video and agent_cfg.logger.lower() == "wandb":
+        import wandb
+
+        # Create a callback function to log videos to wandb
+        def log_videos_to_wandb():
+            video_dir = os.path.join(log_dir, "videos", "train")
+            if os.path.exists(video_dir):
+                for video_file in os.listdir(video_dir):
+                    if video_file.endswith(".mp4"):
+                        video_path = os.path.join(video_dir, video_file)
+                        if not getattr(log_videos_to_wandb, 'logged_videos', set()).__contains__(video_path):
+                            # Log video to wandb
+                            wandb.log({"training_video": wandb.Video(video_path, fps=30, format="mp4")})
+                            # Keep track of which videos we've logged
+                            getattr(log_videos_to_wandb, 'logged_videos', set()).add(video_path)
+        
+        # Initialize set of logged videos
+        log_videos_to_wandb.logged_videos = set()
+        
+        # Add video logging hook to save method via monkey patching
+        original_save = runner.__class__.save
+        
+        def save_with_video_logging(self, path, infos=None):
+            # Call original save method
+            result = original_save(self, path, infos)
+            # Log videos when saving checkpoints
+            if self.logger_type == "wandb":
+                log_videos_to_wandb()
+            return result
+        
+        # Apply the monkey patch
+        runner.__class__.save = save_with_video_logging 
+
     # write git state to logs
     runner.add_git_repo_to_log(__file__)
     # save resume path before creating a new log_dir
